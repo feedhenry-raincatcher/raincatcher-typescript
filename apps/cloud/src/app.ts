@@ -45,25 +45,26 @@ app.use(function(req, res, next) {
     next(err);
 });
 
+let errHandler: express.ErrorRequestHandler;
 if (app.get('env') === 'development') {
-    app.use(function (err: any, req: any, res: any, next: any) {
+    errHandler = function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
             error: err
         });
-    });
+    };
+} else {
+    // production error handler
+    // no stacktraces leaked to user
+    errHandler = function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: {}
+        });
+    }
 }
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err: any, req: any, res: any, next: any) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});
-
+app.use(errHandler);
 
 export default app;

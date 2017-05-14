@@ -18,6 +18,18 @@ export default function securityInit(app: express.Router, userStore: Store<User>
     setupToken(app, userStore);
 }
 
+function passwordCheck(userStore: Store<User>): passportLocal.VerifyFunction {
+    return function(username, password, done) {
+        userStore.list().then(function (users: User[]) {
+            var found = _.find(users, user => user.name === username);
+            // TODO handle errors
+            // TODO check password
+            done(null, found);
+        })
+        .catch(done);
+    }
+}
+
 /**
  * Setup single token based authentication
  */
@@ -25,18 +37,9 @@ function setupToken(app: express.Router, userStore: Store<User>) {
     app.use(passport.initialize());
     console.info("Token setup called");
 
-    let authLookup = function (username: string, password: string, done: Function) {
-        console.info("Lookup called");
-        userStore.list().then(function (users: User[]) {
-            var found = _.find(users, user => user.name === username);
-            // TODO handle errors
-            // TODO check password
-            done(null, found);
-        });
-    };
-
-    passport.use(new LocalStrategy(authLookup));
+    passport.use(new LocalStrategy(passwordCheck(userStore)));
 }
+
 
 /**
  * Setup session based authentication
@@ -47,32 +50,17 @@ function setupSession(app: express.Router, userStore: Store<User>) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    let authLookup = function (username: string, password: string, done: Function) {
-        userStore.list().then(function (users: User[]) {
-            var found = _.find(users, user => user.name === username);
-            // TODO handle errors
-            // TODO check password
-            done(null, found);
-        });
-    };
-
-    passport.use(new LocalStrategy(authLookup));
+    passport.use(new LocalStrategy(passwordCheck(userStore)));
 
     // Session serialization
-    passport.serializeUser(function (user: User, done: Function) {
+    passport.serializeUser<User, string>(function (user, done) {
         done(null, user.id);
     });
 
-    passport.deserializeUser(function (id: any, done: Function) {
-        userStore.list().then(function (users: User[]) {
-            var found = _.find(users, user => user.id === id);
-            // TODO handle errors
-            done(null, found);
-        });
+    passport.deserializeUser<User, string>(function (id, done) {
+        userStore.list().filter<User>(u => u.id === id)
+            .then(_.first)
+            .then(u => done(null, u))
+            .catch(done)
     });
-
-
-
 }
-
-
