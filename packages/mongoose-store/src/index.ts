@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 import DB from './DB';
 import modelSchemas, { SchemaBuilder, SchemaMap } from './models';
 
-interface MongooseBackedStore {
+export interface MongooseBackedStore {
   /**
    *
    * Function to connect to mongoose and set up models based on schemas.
@@ -36,9 +36,9 @@ const label = config.module;
 
 interface MongooseModelMap {
   [index: string]: mongoose.Model<mongoose.Document>;
-};
+}
 
-let MODELS: MongooseModelMap = {};
+const MODELS: MongooseModelMap = {};
 
 const connector = new DB();
 
@@ -60,11 +60,13 @@ const api: MongooseBackedStore = {
     return connector.closeConnection();
   },
   getDAL: function getDAL(dataset: string) {
-    let model = MODELS[dataset];
+    const model = MODELS[dataset];
     if (!model) {
       return Promise.reject<Store>(new Error('Invalid model for dataset ' + dataset));
     }
-    let mongooseDal = new Store(dataset, model);
+    const mongooseDal = new Store(dataset, model);
     return Promise.resolve(mongooseDal);
   }
 };
+
+export default api;
