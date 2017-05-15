@@ -3,7 +3,6 @@
 import * as Promise from 'bluebird';
 import * as _ from 'lodash';
 import * as mongoose from 'mongoose';
-import buildQuery from './query-builder';
 
 export interface ErrorWithId extends Error {
   id?: any;
@@ -27,7 +26,7 @@ function convertToJSON(document: mongoose.Document) {
  * @param id - The ID of the document that wasn't found
  */
 function createNoDocumentError(id?: string) {
-  let error: ErrorWithId = new Error('No document with id ' + id  + ' found');
+  const error: ErrorWithId = new Error('No document with id ' + id  + ' found');
   error.id = id;
   return error;
 }
@@ -42,18 +41,19 @@ function createNoDocumentError(id?: string) {
  */
 class Store {
   public isPersistent = true;
-  constructor (protected _datasetId: string, protected model: mongoose.Model<mongoose.Document>) {
+  constructor(protected _datasetId: string, protected model: mongoose.Model<mongoose.Document>) {
   }
 
-  init = function(this: Store, data: Object[]) {
-    let self = this;
+  public init = function(this: Store, data: object[]) {
+    const self = this;
     if (!_.isArray(data)) {
+      // tslint:disable-next-line:no-console
       console.log('Initialization data is not array.');
       return Promise.resolve();
     }
 
     return Promise.map(data, function(entry) {
-      let record = new self.model(entry);
+      const record = new self.model(entry);
       return record.save().catch(function(err) {
         return self.handleError(undefined, err);
       });
@@ -69,7 +69,7 @@ class Store {
    * @param {string} id - An ID to pass include with the error
    * @param {Promise} error - The error to handle
    */
-  handleError = function handleError(id: string | undefined, error: ErrorWithId | any) {
+  public handleError = function handleError(id: string | undefined, error: ErrorWithId | any) {
     if (error.name === 'ValidationError') {
       error = new Error(error.toString());
     }
@@ -85,22 +85,22 @@ class Store {
     return Promise.reject<ErrorWithId>(error);
   };
 
-  create = function(this: Store, object: Object) {
-    let self = this;
-    let record = new this.model(object);
+  public create = function(this: Store, object: object) {
+    const self = this;
+    const record = new this.model(object);
     return record.save().catch(function(err) {
       return self.handleError(undefined, err);
     });
   };
-  findById = function(this: Store, id: any) {
-    let self = this;
-    return this.model.findOne({id: id}, {_id: 0}).exec().then(convertToJSON).catch(function(err) {
+  public findById = function(this: Store, id: any) {
+    const self = this;
+    return this.model.findOne({id}, {_id: 0}).exec().then(convertToJSON).catch(function(err) {
       return self.handleError(id, err);
     });
   };
-  read = function(this: Store, id: any) {
-    let self = this;
-    return this.model.findOne({id: id}, {_id: 0}).exec().then(function(foundDocument) {
+  public read = function(this: Store, id: any) {
+    const self = this;
+    return this.model.findOne({id}, {_id: 0}).exec().then(function(foundDocument) {
 
       if (!foundDocument) {
         return createNoDocumentError(id);
@@ -111,7 +111,7 @@ class Store {
       return self.handleError(id, err);
     });
   };
-  update = function(this: Store, object: { _localuid?: string, id?: string }) {
+  public update = function(this: Store, object: { _localuid?: string, id?: string }) {
     const self = this;
     let query;
 
@@ -119,7 +119,7 @@ class Store {
       return self.handleError(undefined, new Error('Expected an object to update'));
     }
 
-    let uid = object._localuid || object.id;
+    const uid = object._localuid || object.id;
 
     if (object.id) {
       query = {id: object.id};
@@ -143,11 +143,11 @@ class Store {
       return self.handleError(uid, err);
     });
   };
-  remove = function(object: { id?: string | number}) {
-    let self = this;
+  public remove = function(object: { id?: string | number}) {
+    const self = this;
 
-    let id = object instanceof Object ? object.id : object;
-    return this.model.findOneAndRemove({id: id}).then(convertToJSON).catch(function(err: Error) {
+    const id = object instanceof Object ? object.id : object;
+    return this.model.findOneAndRemove({id}).then(convertToJSON).catch(function(err: Error) {
       return self.handleError(id, err);
     });
   };
@@ -156,15 +156,13 @@ class Store {
    *
    * Lists documents for a model.
    *
-   * @param {object} filter - Optional filter to pass when listing documents for a model. (See https://docs.mongodb.com/manual/tutorial/query-documents/)
+   * @param filter - Optional filter to pass when listing documents for a model.
+   * @see {@link https://docs.mongodb.com/manual/tutorial/query-documents/}
    */
-  list = function(this: Store, filter: any) {
-    let self = this;
+  public list = function(this: Store, filter?: any) {
+    const self = this;
     filter = filter || {};
-
-    let query = buildQuery(filter);
-
-    let mongooseQuery = this.model.find(query, {_id: 0});
+    const mongooseQuery = this.model.find(filter, {_id: 0});
 
     if (filter.sort && typeof filter.sort === 'object') {
       mongooseQuery.sort(filter.sort);
