@@ -1,7 +1,5 @@
-'use strict';
-
-import * as mongoose from 'mongoose';
 import * as Promise from 'bluebird';
+import * as mongoose from 'mongoose';
 const label = '[fh-mongoose] ';
 
 const handlers = {
@@ -39,14 +37,14 @@ export default class DB {
   };
 
   getConfig = function(this: DB) {
-    var self = this;
+    let self = this;
     return Promise.resolve(self.connection.config);
-  }
+  };
   closeConnection = function() {
-    var self = this;
+    let self = this;
     return new Promise(function(resolve) {
       self.connection.close(handlers.onClose);
       resolve(true);
     });
-  }
+  };
 };

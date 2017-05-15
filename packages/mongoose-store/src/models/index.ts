@@ -3,25 +3,15 @@
 // We need to import mongoose here to be able to reexport its types
 import * as mongoose from 'mongoose';
 
-import messages from './messages'
-import gps from './gps'
-import group from './group'
-import workflows from './workflows'
-import file from './file'
-import membership from './membership'
-import workorders from './workorders'
-import result from './result'
+import result from './result';
+import workflows from './workflows';
+import workorders from './workorders';
 
-export interface SchemaMap { [index: string] : SchemaBuilder };
+export interface SchemaMap { [index: string]: SchemaBuilder; }
 const models: SchemaMap = {
-  messages,
-  gps,
-  group,
+  result,
   workflows,
-  file,
-  membership,
-  workorders,
-  result
+  workorders
 };
 
 export default models;

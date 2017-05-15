@@ -1,24 +1,15 @@
 // TODO move to modules to decide what datastore they should use.
 export default {
-  module: 'raincatcher-mongo-connector',
   datasetIDs: {
-    WORKORDERS: 'workorders',
-    WORKFLOW: 'workflows',
-    FILE: 'file',
-    GPS: 'gps',
-    MESSAGES: 'messages',
     RESULT: 'result',
-    GROUP: 'group',
-    MEMBERSHIP: 'membership'
+    WORKFLOW: 'workflows',
+    WORKORDERS: 'workorders'
   },
+
   modelLabels: {
-    WORKORDERS: 'Workorder',
-    WORKFLOW: 'Workflow',
-    FILE: 'File',
-    GPS: 'Gps',
-    MESSAGES: 'Message',
     RESULT: 'Result',
-    GROUP: 'Group',
-    MEMBERSHIP: 'Membership'
-  }
+    WORKFLOW: 'Workflow',
+    WORKORDERS: 'Workorder'
+  },
+  module: 'raincatcher-mongo-connector'
 };
