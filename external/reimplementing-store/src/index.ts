@@ -1,6 +1,6 @@
+import { HasId, Store } from '@raincatcher/store';
 import * as Promise from 'bluebird';
 import { cloneDeep } from 'lodash';
-import { Store, HasId } from '@raincatcher/store';
 const sayHello = ((from: string) => console.log(`Hello from reimplementing store's ${from}!`));
 
 class StoreImpl<T extends HasId> implements Store<T> {
@@ -13,22 +13,31 @@ class StoreImpl<T extends HasId> implements Store<T> {
     } else {
       this.data = [];
     }
-  };
+  }
 
-  list() {
+  public list() {
     sayHello('list');
     return Promise.resolve(this.data);
-  };
+  }
 
-  add(user: T) {
+  public listWithCondition(condition: Object, limit: number) {
+    sayHello('listWithCondition');
+    return Promise.resolve(this.data);
+  }
+
+  public add(user: T) {
     sayHello('add');
     this.data.push(user);
     return Promise.resolve(user);
-  };
+  }
 
-  reset() {
+  public reset() {
     sayHello('reset');
-    this.data = cloneDeep(this.seedData);
+    if (this.seedData) {
+      this.data = cloneDeep(this.seedData);
+    } else {
+      this.data = [];
+    }
     return this.list();
   }
 }

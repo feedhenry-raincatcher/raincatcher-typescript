@@ -1,10 +1,10 @@
-import * as express from 'express';
 import { Store } from '@raincatcher/store';
+import * as express from 'express';
 
 export interface Message {
-	id : string;
-	userId : string;
-  content : string;
+  id: string;
+  userId: string;
+  content: string;
 }
 
 export default function initializeRouter(store: Store<Message>) {
@@ -18,10 +18,10 @@ export default function initializeRouter(store: Store<Message>) {
   });
 
   route.post(function(req, res) {
-    var userToCreate = req.body;
+    const userToCreate = req.body;
     store.add(userToCreate)
       .then(res.json.bind(res));
   });
 
   return router;
-};
+}

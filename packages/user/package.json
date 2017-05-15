@@ -4,7 +4,7 @@
   "author": "",
   "license": "MIT",
   "main": "lib/index.js",
-  "types": "types/index.d.ts",
+  "types": "src/index.ts",
   "dependencies": {
     "express": "^4.14.0",
     "request": "^2.75.0",
