@@ -9,6 +9,7 @@ import * as passport from 'passport';
 
 import Store from '@raincatcher/store';
 import userRouterBuilder, { User } from '@raincatcher/user';
+// tslint:disable-next-line:no-var-requires
 const userSeedData: User[] = require('./users.json');
 const userStore = new Store<User>(userSeedData);
 const userRouter = userRouterBuilder(userStore);

@@ -1,6 +1,7 @@
 import { HasId, Store } from '@raincatcher/store';
 import * as Logger from 'bunyan';
 import * as express from 'express';
+import * as _ from 'lodash';
 import { ApiService, StoreApiService } from './service';
 
 const log = Logger.createLogger({ name: __filename, level: 'debug' });
@@ -25,21 +26,8 @@ export function loggerMiddleware(req: any, res: any) {
   });
 }
 
-/**
- * Raincatcher webapi service module
- *
- * Create codeless API using express.js
- *
- * @param service - service implementation
- * @param config - module configuration
- * @return router - router that can be mounted in top level application
- */
-export default function apiModule<T extends HasId>(service: ApiService<T>, config: WebApiConfig) {
-  const router: express.Router = express.Router();
-  const route = router.route('/');
-  log.info('Creating new api mount', { config });
-  route.get(function(req, res) {
-    console.error('Using filter query', req.params.query);
+const listHandler = function<T extends HasId>(service: ApiService<T>) {
+  const handler: express.RequestHandler = function(req, res) {
     if (req.params.query) {
       let query: object;
       try {
@@ -57,8 +45,55 @@ export default function apiModule<T extends HasId>(service: ApiService<T>, confi
       log.debug('List all without query');
       service.list().then((objects) => res.json(objects));
     }
-  });
-  route.post(function(req, res) {
+  };
+  return handler;
+};
+
+/** Specialized request object with populated item */
+export interface SinglePopulatedRequest<T extends HasId> extends express.Request {
+  item?: T;
+}
+
+const getHandler = function<T extends HasId>(service: ApiService<T>) {
+  const handler: express.RequestHandler = function(req: SinglePopulatedRequest<T>, res, next) {
+    if (req.item) {
+      res.json(req.item);
+    } else {
+      res.status(404);
+      next();
+    }
+  };
+  return handler;
+};
+
+const populateById = function<T extends HasId>(service: ApiService<T>) {
+  const paramHandler: express.RequestParamHandler = function(req: SinglePopulatedRequest<T>, res, next, id: string) {
+    service.list().then((items) =>
+      _.find(items, (item) => item.id === id))
+      .then((item) => req.item = item)
+      .then(() => next())
+      .catch(next);
+  };
+  return paramHandler;
+};
+
+/**
+ * Raincatcher webapi service module
+ *
+ * Create codeless API using express.js
+ *
+ * @param service - service implementation
+ * @param config - module configuration
+ * @return router - router that can be mounted in top level application
+ */
+export default function apiModule<T extends HasId>(service: ApiService<T>, config: WebApiConfig) {
+  const router: express.Router = express.Router();
+  log.info('Creating new api mount', { config });
+
+  router.param('id', populateById(service));
+  router.get('/:id', getHandler(service));
+  router.get('/', listHandler(service));
+  router.post('/', function(req, res) {
     const userToCreate = req.body;
     service.add(userToCreate).then((objects) => res.json(objects));
   });
