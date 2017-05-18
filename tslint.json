@@ -19,7 +19,8 @@
             "allow-pascal-case",
             "allow-leading-underscore"
         ],
-        "interface-name": [
+      "no-unused-variable": true,
+      "interface-name": [
           false
         ]
     }

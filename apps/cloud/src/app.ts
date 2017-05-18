@@ -9,7 +9,9 @@ import * as passport from 'passport';
 
 import Store from '@raincatcher/store';
 import userRouterBuilder, { User } from '@raincatcher/user';
-const userSeedData: User[] = require('./users.json');
+
+import userSeedData from './users';
+
 const userStore = new Store<User>(userSeedData);
 const userRouter = userRouterBuilder(userStore);
 

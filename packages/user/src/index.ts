@@ -2,9 +2,16 @@ import { Store } from '@raincatcher/store';
 import * as express from 'express';
 
 export interface User {
+  avatar: string;
+  banner: string;
+  email: string;
   id: string;
   name: string;
-  email: string;
+  notes: string;
+  password: string;
+  phone: string;
+  position: string;
+  username: string;
 }
 
 export default function initializeRouter(store: Store<User>) {
