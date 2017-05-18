@@ -34,6 +34,9 @@ app.use('/tasks', taskRoute);
 import seeFoodRoute from './api/see_food';
 app.use('/seefood', seeFoodRoute);
 
+import catRoute from './api/cat';
+app.use('/cats', catRoute);
+
 // Security spike
 import securityInit from './passportSecurity';
 const secMiddleware = securityInit(app, userStore);
