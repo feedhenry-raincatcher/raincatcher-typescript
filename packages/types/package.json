@@ -9,7 +9,6 @@
   "devDependencies": {
     "@types/bluebird": "^3.5.4",
     "@types/mongoose": "^4.7.12",
-    "mongoose": "^4.9.10",
     "typescript": "^2.3.2"
   },
   "dependencies": {
