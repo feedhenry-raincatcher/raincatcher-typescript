@@ -13,7 +13,7 @@ import Store from '@raincatcher/store';
 import webapi, {ApiService, StoreApiService, WebApiConfig}  from '@raincatcher/webapi';
 import * as express from 'express';
 
-// Define new datatype
+// Define User datatype
 interface User {
   id: string,
   username: string,
@@ -31,7 +31,7 @@ const config: WebApiConfig = {
   limits: true
 };
 
-// Create sample data
+// Create sample user
 const sampleUser: User =   {
   "id" : "156340",
   "username" : "trever",
@@ -47,7 +47,7 @@ const sampleUser: User =   {
 const userStore = new Store<User>([sampleUser]);
 // This example is simple but it shows alternative way for developers to extend module functionality.
 // Service by default wrapes store, but developers can extend store (or just particular methods)
-// To provide custome functionality additionally some different store can be injected into implementation.
+// To provide custom functionality additionally some different store can be injected into implementation.
 const userService = new StoreApiService<User>(userStore);
 const userRouter: express.Router = webapi(userService, config);
 

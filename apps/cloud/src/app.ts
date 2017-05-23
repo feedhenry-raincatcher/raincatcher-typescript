@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
-//app.use('/users', userRouter);
+app.use('/users', userRouter);
 app.use('/messages', messageRouter);
 
 import taskRoute from './api/task';
@@ -43,13 +43,13 @@ app.use('/cats', catRoute);
 User needs
  Base url : `/api/wfm/[group|user|membership|`
 
- | resource | method | returns                            |
- | -------- | ------ | ---------------------------------- |
- | /        | GET    | array of users/groups/memberships  |
- | /:id     | GET    | user/group/membership              |
- | /:id     | PUT    | updated user/group/membership      |
- | /        | POST   | created user/group/membership      |
- | /:id     | DELETE | deleted user/group/membership      |
+ | resource | method | returns         |
+ | -------- | ------ | --------------- |
+ | /        | GET    | array of users  |
+ | /:id     | GET    | user            |
+ | /:id     | PUT    | updated user    |
+ | /        | POST   | created user    |
+ | /:id     | DELETE | deleted user    |
  */
 
 import userRoute from './api/user';
