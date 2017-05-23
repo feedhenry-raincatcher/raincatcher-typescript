@@ -39,3 +39,16 @@ let taskService = new StoreApiService<Task>(taskStore);
 let taskRouter: express.Router = webapi(taskService, config);
 router.add("workflows", taskRouter);
 ```
+
+
+User API Endpoints
+
+
+ | resource | method | returns       |
+ | -------- | ------ | --------------|
+ | /        | GET    | array of users|
+ | /:id     | GET    | user          |
+ | /:id     | PUT    | updated user  |
+ | /        | POST   | created user  |
+ | /:id     | DELETE | deleted user  |
+

@@ -39,19 +39,6 @@ app.use('/seefood', seeFoodRoute);
 import catRoute from './api/cat';
 app.use('/cats', catRoute);
 
-/*
-User needs
-
- | resource | method | returns       |
- | -------- | ------ | --------------|
- | /        | GET    | array of users|
- | /:id     | GET    | user          |
- | /:id     | PUT    | updated user  |
- | /        | POST   | created user  |
- | /:id     | DELETE | deleted user  |
-
- */
-
 import userRoute from './api/user';
 app.use('/', userRoute);
 
@@ -62,34 +49,5 @@ app.use('/apiSecured', secMiddleware, function(req, res) {
     res.json({ message: 'Authenticated response' });
 });
 
-// if you enter a invalid endpoint the app will continue to fail with this implemented
-/*
-app.use(function(req, res, next) {
-    const err = new Error('Not Found');
-    next(err);
-});
-
-let errHandler: express.ErrorRequestHandler;
-if (app.get('env') === 'development') {
-    errHandler = function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.json({
-            error: err,
-            message: err.message
-        });
-    };
-} else {
-    // production error handler
-    // no stacktraces leaked to user
-    errHandler = function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.json({
-            error: {},
-            message: err.message
-        });
-    };
-}
-app.use(errHandler);
-*/
 
 export default app;
