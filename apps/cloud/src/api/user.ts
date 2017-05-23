@@ -1,17 +1,10 @@
 /**
- * Created by acunningham on 23/05/17.
- */
-
-/**
  * Created by acunningham on 22/05/17.
  */
-// Example shows that modules can be extended now in demo application codebase.
-// This example setup Restfull API for tasks backed by application store
-// Example proves that we do not need to have separate modules for simple datasets.
 import Store from '@raincatcher/store';
-// Express.js based out of the box api service
 import webapi, {ApiService, StoreApiService, WebApiConfig}  from '@raincatcher/webapi';
 import * as express from 'express';
+
 
 // Define User datatype
 interface User {
