@@ -36,16 +36,16 @@ const config: WebApiConfig = {
 // Create sample data
 const sampleUser: User = {
   id: '1',
-  name: 'Make RainCatcher great again',
-  username: " ",
-  password: " ",
-  bannerURL: "",
-  avatarURL: "",
-  phoneNumber: "",
-  email: "",
-  position: "",
-  group: "",
-  notes: ""
+  name: 'test',
+  username: "Test ",
+  password: "Test",
+  bannerURL: "http://test.com",
+  avatarURL: "http://test.com/picture.jpg",
+  phoneNumber: "2387497329823",
+  email: "test@test.com",
+  position: "owner",
+  group: "management",
+  notes: "test note"
 };
 
 const userStore = new Store<User>([sampleUser]);
