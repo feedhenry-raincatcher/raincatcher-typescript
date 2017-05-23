@@ -49,6 +49,8 @@ app.use('/apiSecured', secMiddleware, function(req, res) {
     res.json({ message: 'Authenticated response' });
 });
 
+// if you enter a invalid endpoint the app will continue to fail with this implemented
+/*
 app.use(function(req, res, next) {
     const err = new Error('Not Found');
     next(err);
@@ -75,5 +77,6 @@ if (app.get('env') === 'development') {
     };
 }
 app.use(errHandler);
+*/
 
 export default app;
