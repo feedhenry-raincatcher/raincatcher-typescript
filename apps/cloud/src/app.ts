@@ -39,8 +39,21 @@ app.use('/seefood', seeFoodRoute);
 import catRoute from './api/cat';
 app.use('/cats', catRoute);
 
+/*
+User needs
+ Base url : `/api/wfm/[group|user|membership|`
+
+ | resource | method | returns                            |
+ | -------- | ------ | ---------------------------------- |
+ | /        | GET    | array of users/groups/memberships  |
+ | /:id     | GET    | user/group/membership              |
+ | /:id     | PUT    | updated user/group/membership      |
+ | /        | POST   | created user/group/membership      |
+ | /:id     | DELETE | deleted user/group/membership      |
+ */
+
 import userRoute from './api/user';
-app.use('/user', userRoute);
+app.use('/', userRoute);
 
 // Security spike
 import securityInit from './passportSecurity';

@@ -16,16 +16,14 @@ import * as express from 'express';
 // Define new datatype
 interface User {
   id: string,
-  name: string,
   username: string,
-  password: string,
-  bannerURL: string,
-  avatarURL: string,
-  phoneNumber: string,
-  email: string,
+  name: string,
   position: string,
-  group: string,
-  notes: string
+  phone: string,
+  email: string,
+  notes: string,
+  avatar: string,
+  banner: string,
 }
 
 // Setup configuration
@@ -34,18 +32,16 @@ const config: WebApiConfig = {
 };
 
 // Create sample data
-const sampleUser: User = {
-  id: '1',
-  name: 'test',
-  username: "Test ",
-  password: "Test",
-  bannerURL: "http://test.com",
-  avatarURL: "http://test.com/picture.jpg",
-  phoneNumber: "2387497329823",
-  email: "test@test.com",
-  position: "owner",
-  group: "management",
-  notes: "test note"
+const sampleUser: User =   {
+  "id" : "156340",
+  "username" : "trever",
+  "name" : "Trever Smith",
+  "position" : "Senior Truck Driver",
+  "phone" : "(265) 725 8272",
+  "email" : "trever@wfm.com",
+  "notes" : "Trever doesn't work during the weekends.",
+  "avatar" : "https://s3.amazonaws.com/uifaces/faces/twitter/kolage/128.jpg",
+  "banner" : "http://web18.streamhoster.com/pentonmedia/beefmagazine.com/TreverStockyards_38371.jpg"
 };
 
 const userStore = new Store<User>([sampleUser]);
