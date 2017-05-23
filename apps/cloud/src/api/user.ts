@@ -16,14 +16,13 @@ import * as express from 'express';
 // Define User datatype
 interface User {
   id: string,
-  username: string,
   name: string,
-  position: string,
-  phone: string,
-  email: string,
-  notes: string,
-  avatar: string,
-  banner: string,
+  position?: string,
+  phone?: string,
+  email?: string,
+  notes?: string,
+  avatar?: string,
+  banner?: string,
 }
 
 // Setup configuration
@@ -34,7 +33,6 @@ const config: WebApiConfig = {
 // Create sample user
 const sampleUser: User =   {
   "id" : "156340",
-  "username" : "trever",
   "name" : "Trever Smith",
   "position" : "Senior Truck Driver",
   "phone" : "(265) 725 8272",
