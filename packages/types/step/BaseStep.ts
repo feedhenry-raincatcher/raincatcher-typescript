@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'eventemitter3';
 import Step, { StepEventData, StepStatus } from './index';
 
 class BaseStep extends EventEmitter implements Step {

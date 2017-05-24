@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'eventemitter3';
 import JsonSchema from '../JsonSchema';
 
 export interface StepEventData<T extends Step> {
