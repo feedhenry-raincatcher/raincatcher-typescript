@@ -8,7 +8,7 @@ import userSeedData from "../users";
 
 
 // Define User datatype
-interface User {
+interface user {
   id: string,
   name: string,
   position?: string,
@@ -24,9 +24,9 @@ const config: WebApiConfig = {
   limits: true
 };
 
-const userStore = new Store<User>(userSeedData);
+const userStore = new Store<user>(userSeedData);
 
-const userService = new StoreApiService<User>(userStore);
-const userRouter: express.Router = webapi(userService, config);
+const userService = new StoreApiService<user>(userStore);
+const userRoute: express.Router = webapi(userService, config);
 
-export default userRouter;
+export default userRoute;

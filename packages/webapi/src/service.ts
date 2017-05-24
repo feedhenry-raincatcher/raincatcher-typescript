@@ -66,10 +66,7 @@ export class StoreApiService<T extends HasId> implements ApiService<T> {
   }
 
   public read(dataID: string) {
-    const sampleData = {
-      id: "this_is_a_sample_data"
-    };
     log.info('Service read called', dataID);
-    return Promise.resolve(sampleData as T);
+    return Promise.resolve({} as T);
   }
 }
