@@ -4,6 +4,8 @@ import Step from '../step';
  */
 interface Workflow {
   id: string;
+  /** Description for UI */
+  name: string;
   steps: Step[];
 }
 export default Workflow;
