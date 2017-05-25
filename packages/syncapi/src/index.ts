@@ -95,14 +95,6 @@ class FeedhenrySync implements SyncApiService {
       if (err) {
         throw new Error(err);
       } else {
-        // Sync api will use standard storage no custom handlers required.
-        // SyncStorage storage = new SyncStorage()
-        // syncAPI.handleList(datasetId, dataListHandler);
-        // syncAPI.handleCreate(datasetId, dataCreateHandler);
-        // syncAPI.handleUpdate(datasetId, dataSaveHandler);
-        // syncAPI.handleRead(datasetId, dataGetHandler);
-        // syncAPI.handleDelete(datasetId, dataDeleteHandler);
-
         // set optional custom collision handler if its a function
         if (options && options.collisionHandler) {
           syncAPI.handleCollision(datasetId, options.collisionHandler);
