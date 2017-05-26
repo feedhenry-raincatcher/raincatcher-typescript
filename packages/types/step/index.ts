@@ -46,7 +46,7 @@ export enum StepStatus {
   'error' = 500
 }
 
-interface Step {
+export interface Step {
   status: StepStatus | number;
   /**
    * Set of config options that the Step requires
@@ -65,5 +65,5 @@ interface Step {
   // Step implementations would carry extra metadata needed for execution and UI
 }
 
-
-export default Step;
+import BaseStep from './BaseStep';
+export default BaseStep;

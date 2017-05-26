@@ -1,5 +1,6 @@
 import { EventEmitter } from 'eventemitter3';
-import Step from '../step';
+import * as _ from 'lodash';
+import {Step} from '../step';
 import Workflow from '../workflow';
 
 interface TaskStepEventData<T extends Task>  {
@@ -11,18 +12,7 @@ interface TaskEventData<T extends Task> {
   task: T;
 }
 
-// Task is a class I don't see much need for custom implementations
-class TaskImpl extends EventEmitter implements Task {
-  public id: string;
-  public assigneeId: string;
-  public watcherIds: string[];
-  public workflowId: string;
-  public currentStep: Step;
-  public steps: Step[];
-}
-
-
-interface Task extends EventEmitter {
+export interface Task extends EventEmitter {
   id: string;
   assigneeId: string;
   // multiple Users might want to watch a Task's progression
@@ -38,4 +28,21 @@ interface Task extends EventEmitter {
   on(event: 'step:change', handler: (e: TaskStepEventData<this>) => any): this;
   on(event: 'task:done', handler: (e: TaskEventData<this>) => any): this;
 }
-export default Task;
+
+// Task is a class I don't see much need for custom implementations
+class TaskImpl extends EventEmitter implements Task {
+  public id: string;
+  public assigneeId: string;
+  public watcherIds: string[];
+  public workflowId: string;
+  public currentStep: Step;
+  public steps: Step[];
+
+  constructor(initialSteps: Step[]) {
+    super();
+    this.steps = _.cloneDeep(initialSteps);
+    this.currentStep = this.steps[0];
+  }
+}
+
+export default TaskImpl;

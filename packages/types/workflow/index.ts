@@ -1,11 +1,26 @@
-import Step from '../step';
+import * as _ from 'lodash';
+import {Step} from '../step';
+import TaskImpl, {Task} from '../task';
 /**
  * Workflow is the definition holder for a set of Steps that can become a Task
  */
-interface Workflow {
+export interface Workflow {
   id: string;
   /** Description for UI */
-  name: string;
+  displayName: string;
   steps: Step[];
+
+  buildTask(): Task;
 }
-export default Workflow;
+
+export default class WorkflowImpl implements Workflow {
+  public steps: Step[];
+  public id: string;
+  constructor(public displayName) {
+  }
+
+  public buildTask() {
+    const task = new TaskImpl(this.steps);
+    return task;
+  }
+}
