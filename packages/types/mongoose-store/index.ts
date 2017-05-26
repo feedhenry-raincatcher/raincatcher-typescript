@@ -1,7 +1,7 @@
 import * as Promise from 'bluebird';
 import * as mongoose from 'mongoose';
 
-export default class MongooseStore<T>{
+export default class MongooseStore<T> implements Store<T>{
   constructor(protected conn: mongoose.Connection) {
 
   }
@@ -16,6 +16,11 @@ export interface Store<T> {
   create(data: T): Promise<T>;
   update(id: ID, data: T): Promise<T>;
   delete(id: ID): Promise<T>;
+}
+
+export interface WorkOrderRepository {
+  getUnfinishedWorkorders();
+  getWorkordersForUser(userId);
 }
 
 interface Predicate<T> {

@@ -4,6 +4,7 @@ import MongooseStore, { Store } from './index';
 
 interface User {
   id: string;
+  /** User's name */
   name: string;
   age: number;
   todos: Todos[];
@@ -34,8 +35,8 @@ describe('Store Interface', function() {
     // Mongoose-style large query object example
     return store.find({
       where: {
-        eq: { name: 'jon' },
-        gt: { age: 18 },
+        eq: {name: 'trever'},
+        gt: { age: 18 },123
         or: {
           eq: { name: 'snow' }
         }

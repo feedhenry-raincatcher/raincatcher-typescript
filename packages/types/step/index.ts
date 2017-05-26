@@ -61,6 +61,13 @@ export interface Step {
   setOptions: (options: object) => void;
 
   on(event: 'statusChange', handler: StepEventHandler<this>): this;
+  on(event: 'done', handler: StepEventHandler<this>): this;
+
+  /**
+   * A Step needs to know how to execute itself,
+   * however progress and results should be provided via events since they can involve human execution and so on
+   */
+  run(): void;
 
   // Step implementations would carry extra metadata needed for execution and UI
 }

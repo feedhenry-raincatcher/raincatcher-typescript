@@ -3,12 +3,12 @@ import * as _ from 'lodash';
 import {Step} from '../step';
 import Workflow from '../workflow';
 
-interface TaskStepEventData<T extends Task>  {
+export interface TaskStepEventData<T extends Task>  {
   task: T;
   step: Step;
 }
 
-interface TaskEventData<T extends Task> {
+export interface TaskEventData<T extends Task> {
   task: T;
 }
 

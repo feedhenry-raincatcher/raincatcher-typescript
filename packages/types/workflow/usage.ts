@@ -14,5 +14,6 @@ describe('Workflow', function() {
 
   it('should be able to instantiate a Task', function() {
     const task: Task = workflow.buildTask();
+    task.assigneeId = trever.id;
   });
 });
