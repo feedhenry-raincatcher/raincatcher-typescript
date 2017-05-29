@@ -1,7 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 import Step, { StepEventData, StepStatus } from './index';
 
-class BaseStep extends EventEmitter implements Step {
+abstract class BaseStep extends EventEmitter implements Step {
   protected _status: StepStatus | number = StepStatus.pending;
   protected options: object;
 
@@ -19,14 +19,17 @@ class BaseStep extends EventEmitter implements Step {
   }
 
   // typescript has abstract classes+methods, not sure if we should use them
-  public run() {
-    console.log('run() called in BaseStep');
-  }
+  public abstract run(): void;
 
   public getOptions = () => ({});
   public setOptions(options: object) {
     // TODO: JsonSchema validation with http://epoberezkin.github.io/ajv/
     this.options = options;
+  }
+
+  public getStatus() {
+    const roundedDownStatus = this.status % 100;
+    return StepStatus[roundedDownStatus];
   }
 }
 

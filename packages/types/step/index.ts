@@ -69,6 +69,8 @@ export interface Step {
    */
   run(): void;
 
+  getStatus(): StepStatus;
+
   // Step implementations would carry extra metadata needed for execution and UI
 }
 
