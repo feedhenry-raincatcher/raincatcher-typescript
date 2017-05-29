@@ -36,7 +36,7 @@ describe('Store Interface', function() {
     return store.find({
       where: {
         eq: {name: 'trever'},
-        gt: { age: 18 },123
+        gt: { age: 18 },
         or: {
           eq: { name: 'snow' }
         }
