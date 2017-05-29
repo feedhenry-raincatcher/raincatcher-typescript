@@ -13,7 +13,6 @@ export interface TaskEventData<T extends Task> {
 }
 
 export interface Task extends EventEmitter {
-  id: string;
   assigneeId: string;
   // multiple Users might want to watch a Task's progression
   watcherIds: string[];
@@ -24,6 +23,10 @@ export interface Task extends EventEmitter {
 
   steps: Step[];
   currentStep: Step;
+  // Optionally async
+  next(): Step | Promise<Step>;
+
+  getId(): string;
 
   on(event: 'step:change', handler: (e: TaskStepEventData<this>) => any): this;
   on(event: 'task:done', handler: (e: TaskEventData<this>) => any): this;
@@ -38,10 +41,27 @@ class TaskImpl extends EventEmitter implements Task {
   public currentStep: Step;
   public steps: Step[];
 
+  protected currentStepIdx: number;
+
   constructor(initialSteps: Step[]) {
     super();
     this.steps = _.cloneDeep(initialSteps);
     this.currentStep = this.steps[0];
+    this.currentStepIdx = 0;
+  }
+
+  public getId() {
+    return this.id;
+  }
+
+  public next() {
+    this.currentStep = this.steps[++this.currentStepIdx];
+    const e: TaskStepEventData<this> = {
+      task: this,
+      step: this.currentStep
+    };
+    this.emit('step:change', e);
+    return this.currentStep;
   }
 }
 

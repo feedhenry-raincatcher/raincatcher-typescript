@@ -1,4 +1,3 @@
-import {Store} from '../mongoose-store';
 import { Step } from '../step';
 import { Task, TaskStepEventData } from '../task';
 import { Workflow } from '../workflow';
@@ -6,9 +5,14 @@ import { Workflow } from '../workflow';
 interface Executor {
   workflow: Workflow;
 }
+
+export interface TaskRepository {
+  save(task: Task): Promise<Task>;
+}
+
 class ExecutorImpl implements Executor {
   public task: Task;
-  constructor(public workflow: Workflow, public store: Store<Task>) {
+  constructor(public workflow: Workflow, public taskRepository: TaskRepository) {
   }
   public start() {
     this.task = this.workflow.buildTask();
@@ -17,10 +21,11 @@ class ExecutorImpl implements Executor {
     this.task.on('step:change', this.stepChanged);
   }
   public stepChanged(e: TaskStepEventData<Task>) {
-    this.saveTask()
-      .then(() => e.task.currentStep.run());
+    Promise.resolve(this.task.next())
+      .then(this.saveTask)
+      .then(() => this.task.currentStep.run());
   }
   protected saveTask() {
-    return this.store.update(this.task.id, this.task);
+    return this.taskRepository.save(this.task);
   }
 }

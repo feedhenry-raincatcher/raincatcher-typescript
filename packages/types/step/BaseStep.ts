@@ -18,6 +18,11 @@ class BaseStep extends EventEmitter implements Step {
     return this._status;
   }
 
+  // typescript has abstract classes+methods, not sure if we should use them
+  public run() {
+    console.log('run() called in BaseStep');
+  }
+
   public getOptions = () => ({});
   public setOptions(options: object) {
     // TODO: JsonSchema validation with http://epoberezkin.github.io/ajv/
