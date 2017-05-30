@@ -1,43 +1,49 @@
-/// <reference types="node" />
 /// <reference types="mocha" />
 import * as assert from 'assert';
 import * as Promise from 'bluebird';
-import { Store, Seedable } from '../src';
+import { Seedable, Store } from '../src';
 
-// TODO: replace with DI
 import StoreImpl from '../src';
-describe('Store', function() {
-  let store: Store<{ id: string, name: string, address: string }>;
-  beforeEach(function(){
-    store = new StoreImpl([{
+interface MockUser {
+  id: string;
+  name: string;
+  address: string;
+}
+
+interface StoreTests {
+  store: Store<MockUser>;
+  getStore(): Store<MockUser>;
+  [suites: string]: any;
+}
+
+const tests: StoreTests = {
+  store: null,
+  getStore() {
+    return new StoreImpl<MockUser>([{
+      address: 'somewhere',
       id: 'susy',
-      name: 'susy',
-      address: 'somewhere'
+      name: 'susy'
     }]);
-    store.reset();
-  });
+  },
+  beforeEach(this: StoreTests) {
+    this.store = this.getStore();
+    return this.store.reset();
+  },
+  '#list returns all items via an Array'(this: StoreTests) {
+    return this.store.list().then(l =>
+      assert.equal(l.length, 1));
+  },
+  '#add returns the added user'(this: StoreTests) {
+    return this.store.add({
+      address: 'Somewhere only we know',
+      id: 'trever',
+      name: 'trever'
+    }).then(u => assert.equal(u.name, 'trever'));
+  },
+  '#reset resets data to the seed data'(this: StoreTests) {
+    return this.store.reset().then(l =>
+      assert.equal(l.length, 1));
+  }
+};
 
-  describe('#list', function() {
-    it('returns all items via an Array', function() {
-      return store.list().then(l =>
-        assert.equal(l.length, 1));
-    })
-  });
-
-  describe('#add', function() {
-    it('returns the added user', function() {
-      return store.add({
-        id: 'trever',
-        name: 'trever',
-        address: 'Somewhere only we know'
-      }).then(u => assert.equal(u.name, 'trever'));
-    });
-  });
-
-  describe('#reset', function() {
-    it('resets data to the seed data', function() {
-      store.reset().then(l =>
-        assert.equal(l.length, 1));
-    })
-  });
-});
+exports = tests;
