@@ -29,7 +29,7 @@ abstract class BaseStep extends EventEmitter implements Step {
 
   public getStatus() {
     const roundedDownStatus = this.status % 100;
-    return StepStatus[roundedDownStatus];
+    return roundedDownStatus || StepStatus.pending;
   }
 }
 

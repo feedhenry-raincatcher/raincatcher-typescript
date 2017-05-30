@@ -2,8 +2,10 @@ import { Step } from '../step';
 import { Task, TaskStepEventData } from '../task';
 import { Workflow } from '../workflow';
 
-interface Executor {
+export interface Executor {
   workflow: Workflow;
+  task?: Task;
+  start(): void;
 }
 
 export interface TaskRepository {
@@ -29,3 +31,5 @@ class ExecutorImpl implements Executor {
     return this.taskRepository.save(this.task);
   }
 }
+
+export default ExecutorImpl;

@@ -69,7 +69,10 @@ export interface Step {
    */
   run(): void;
 
-  getStatus(): StepStatus;
+  /**
+   * Returns the current Step's status, rounded down to the nearest StepStatus
+   */
+  getStatus(): StepStatus | number;
 
   // Step implementations would carry extra metadata needed for execution and UI
 }
