@@ -39,6 +39,22 @@ app.use('/seefood', seeFoodRoute);
 import catRoute from './api/cat';
 app.use('/cats', catRoute);
 
+/*
+User needs
+ Base url : `/api/wfm/[group|user|membership|`
+
+ | resource | method | returns         |
+ | -------- | ------ | --------------- |
+ | /        | GET    | array of users  |
+ | /:id     | GET    | user            |
+ | /:id     | PUT    | updated user    |
+ | /        | POST   | created user    |
+ | /:id     | DELETE | deleted user    |
+ */
+
+import userRoute from './api/user';
+app.use('/', userRoute);
+
 // Security spike
 import securityInit from './passportSecurity';
 const secMiddleware = securityInit(app, userStore);
@@ -46,6 +62,8 @@ app.use('/apiSecured', secMiddleware, function(req, res) {
     res.json({ message: 'Authenticated response' });
 });
 
+// if you enter a invalid endpoint the app will continue to fail with this implemented
+/*
 app.use(function(req, res, next) {
     const err = new Error('Not Found');
     next(err);
@@ -72,5 +90,6 @@ if (app.get('env') === 'development') {
     };
 }
 app.use(errHandler);
+*/
 
 export default app;
