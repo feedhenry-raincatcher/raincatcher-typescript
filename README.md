@@ -13,7 +13,7 @@ npm install
 
 ### Bootstrap application
 
-lerna boostrap
+lerna bootstrap
 
 ### Running demo cloud
 
