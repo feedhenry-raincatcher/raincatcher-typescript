@@ -10,6 +10,11 @@
                 "singleline": "never"
             }
         ],
+        "arrow-parens": false,
+        "object-literal-sort-keys": false,
+        "object-literal-key-quotes": [
+          false
+        ],
         "max-classes-per-file": [false],
         "no-console": [true, "log"],
         "variable-name": [
